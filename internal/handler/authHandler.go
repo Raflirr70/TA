@@ -21,7 +21,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 
 	user.FirstName = c.PostForm("firstname")
 	user.LastName = c.PostForm("lastname")
-	user.email = c.PostForm("email")
+	user.Email = c.PostForm("email")
 	user.NoTelephone = c.PostForm("no_telephone")
 	user.Password = c.PostForm("password")
 
