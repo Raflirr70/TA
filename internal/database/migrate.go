@@ -9,7 +9,6 @@ import (
 func Migrate() {
 	err := config.DB.AutoMigrate(
 		&model.Role{},
-		&model.Branch{},
 		&model.QR{},
 		&model.Finance{},
 		&model.Item{},
@@ -19,8 +18,10 @@ func Migrate() {
 		&model.Deposit{},
 		&model.Withdraw{},
 		&model.User{},
-		&model.Stock{},
 
+		&model.Owner{},
+		&model.Branch{},
+		&model.Stock{},
 		&model.Income{},
 		&model.StockHistory{},
 		&model.Attendance{},
