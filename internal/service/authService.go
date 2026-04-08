@@ -91,5 +91,38 @@ func (s *authService) Register(user models.User) error {
 	user.Password = hash
 
 	// simpan ke DB
-	return s.repo.Create(user)
+	return s.repo.DB().Transaction(func(tx *gorm.DB) error {
+
+		// simpan user
+		if err := tx.Create(&user).Error; err != nil {
+			return err
+		}
+
+		// 🔥 ambil user_id dari hasil insert
+		owner := models.Owner{
+			UserID: user.UserID,
+		}
+
+		// simpan owner
+		if err := tx.Create(&owner).Error; err != nil {
+			return err
+		}
+
+		// 🔥 ambil owner_id dari hasil insert
+		branch := models.Branch{
+			OwnerID: owner.OwnerID,
+		}
+
+		// simpan branch
+		if err := tx.Create(&branch).Error; err != nil {
+			return err
+		}
+
+		// 🔥 UPDATE user dengan BranchID baru
+		if err := tx.Model(&user).
+			Update("branch_id", branch.BranchID).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 }

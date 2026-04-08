@@ -9,6 +9,7 @@ import (
 type AuthRepository interface {
 	FindUser(email, noTelephone string) (models.User, error)
 	Create(user models.User) error
+	DB() *gorm.DB
 }
 
 type authRepository struct {
@@ -22,7 +23,7 @@ func NewAuthRepository(db *gorm.DB) AuthRepository {
 func (r *authRepository) FindUser(email, noTelephone string) (models.User, error) {
 	var user models.User
 	err := r.db.
-		Where("email = ? OR noTelephone = ?", email, noTelephone).
+		Where("email = ? OR no_telephone = ?", email, noTelephone).
 		First(&user).Error
 
 	return user, err
@@ -30,4 +31,8 @@ func (r *authRepository) FindUser(email, noTelephone string) (models.User, error
 
 func (r *authRepository) Create(user models.User) error {
 	return r.db.Create(&user).Error
+}
+
+func (r *authRepository) DB() *gorm.DB {
+	return r.db
 }

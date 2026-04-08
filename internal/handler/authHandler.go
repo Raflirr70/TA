@@ -19,6 +19,8 @@ func NewAuthHandler(service service.AuthService) AuthHandler {
 func (h *AuthHandler) Register(c *gin.Context) {
 	var user models.User
 
+	user.RoleID = 1
+	user.BranchID = 1
 	user.FirstName = c.PostForm("firstname")
 	user.LastName = c.PostForm("lastname")
 	user.Email = c.PostForm("email")
