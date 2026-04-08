@@ -1,0 +1,22 @@
+Keuangan
+Penjualan
+Pengeluaran
+Gudang
+Laporan
+Cabang
+Karyawan
+Absensi
+
+Aktor
+- Manager
+- Kasir
+- Gudang
+- Pemilik
+
+
+fitur SPK
+- Menentukan prioritas restock barang
+- Menentukan produk terbaik (best seller)
+- Menentukan karyawan terbaik
+- Menentukan cabang terbaik / paling perform
+- Menentukan pengeluaran yang harus dikurangi
