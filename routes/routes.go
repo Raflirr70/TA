@@ -6,4 +6,5 @@ import (
 
 func MainRoute(r *gin.Engine) {
 	AuthRoute(r)
+	EmployeeRoute(r)
 }

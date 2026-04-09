@@ -12,6 +12,7 @@ import (
 type AuthService interface {
 	CheckNewUser(email, noTelephone string) (bool, error)
 	Register(user models.User) error
+	Login(email, password string) (*models.User, error)
 }
 
 type authService struct {
@@ -125,4 +126,19 @@ func (s *authService) Register(user models.User) error {
 		}
 		return nil
 	})
+}
+func (s *authService) Login(identifier, password string) (*models.User, error) {
+	user, err := s.repo.FindUser(identifier, identifier)
+
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, errors.New("Email atau Password Salah")
+		}
+		return nil, err
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return nil, errors.New("Email atau Password Salah")
+	}
+	return &user, nil
 }

@@ -3,6 +3,7 @@ package routes
 import (
 	"tipes/internal/config"
 	"tipes/internal/handler"
+	"tipes/internal/middleware"
 	"tipes/internal/repository"
 	"tipes/internal/service"
 
@@ -15,7 +16,20 @@ func AuthRoute(r *gin.Engine) {
 	authHandler := handler.NewAuthHandler(authService)
 
 	// route
-	r.POST("/register", authHandler.Register)
+	auth := r.Group("/auth")
+	{
+		auth.POST("/register", authHandler.Register)
+		auth.POST("/login", authHandler.Login)
+	}
 
-	r.Run(":8080")
+	protected := r.Group("/api")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		protected.GET("/profile", func(c *gin.Context) {
+			userID, _ := c.Get("user_id")
+			c.JSON(200, gin.H{
+				"user_id": userID,
+			})
+		})
+	}
 }

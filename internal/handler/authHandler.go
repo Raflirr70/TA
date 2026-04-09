@@ -2,8 +2,9 @@ package handler
 
 import (
 	"net/http"
-	models "tipes/internal/model"
+	"tipes/internal/model"
 	"tipes/internal/service"
+	"tipes/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,4 +39,42 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Register berhasil",
 	})
+
+}
+
+func (h *AuthHandler) Login(c *gin.Context) {
+	identifier := c.PostForm("identifier")
+	password := c.PostForm("password")
+
+	// print("email : ", email, "dan password : ", password)
+
+	if identifier == "" || password == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"messege": "Masukan email/no telephone dan password"})
+		return
+	}
+
+	//manggil print
+
+	user, err := h.service.Login(identifier, password)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	token, err := utils.GenerateToken(user.UserID, user.Email)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Login berhasil",
+		"token":   token,
+		// "user": gin.H{
+		// 	"id":          user.UserID,
+		// 	"name":        user.Name,
+		// 	"email":       user.Email,
+		// 	"noTelephone": user.NoTelephone,
+		// },
+	})
+
 }
