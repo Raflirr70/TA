@@ -30,6 +30,12 @@ func (s *employeeService) HireEmployee(emp models.User) error {
 		return errors.New("semua field wajib diisi")
 	}
 	emp.Status = "active"
+	// hash password
+	hash, err := HashPassword(emp.Password)
+	if err != nil {
+		return err
+	}
+	emp.Password = hash
 	return s.repo.Create(emp)
 }
 
@@ -42,10 +48,10 @@ func (s *employeeService) EditEmployee(emp models.User) error {
 	existing.LastName = emp.LastName
 	existing.Email = emp.Email
 	existing.NoTelephone = emp.NoTelephone
-	existing.BranchID = emp.BranchID
+	// existing.BranchID = emp.BranchID
 	return s.repo.Update(existing)
 }
 
-func (s *employeeService) FireEmployee(employeeID uint) error {
-	return s.repo.ChangeStatus(employeeID, "inactive")
+func (s *employeeService) FireEmployee(userID uint) error {
+	return s.repo.ChangeStatus(userID, "inactive")
 }

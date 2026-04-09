@@ -37,15 +37,15 @@ func (r *employeeRepository) Update(employee models.User) error {
 	return r.db.Save(&employee).Error
 }
 
-func (r *employeeRepository) ChangeStatus(employeeID uint, status string) error {
+func (r *employeeRepository) ChangeStatus(userID uint, status string) error {
 	return r.db.Model(&models.User{}).
-		Where("employee_id = ?", employeeID).
+		Where("user_id = ?", userID).
 		Update("status", status).Error
 }
 
-func (r *employeeRepository) FindByID(employeeID uint) (models.User, error) {
+func (r *employeeRepository) FindByID(userID uint) (models.User, error) {
 	var employee models.User
-	err := r.db.First(&employee, employeeID).Error
+	err := r.db.First(&employee, userID).Error
 	return employee, err
 }
 

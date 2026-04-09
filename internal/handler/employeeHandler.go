@@ -34,30 +34,45 @@ func (h *EmployeeHandler) GetEmployees(c *gin.Context) {
 }
 
 func (h *EmployeeHandler) HireEmployee(c *gin.Context) {
-	var emp models.User
-	if err := c.ShouldBindJSON(&emp); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	branchID, _ := strconv.Atoi(c.PostForm("branch_id"))
+	roleID, _ := strconv.Atoi(c.PostForm("role_id"))
+
+	emp := models.User{
+		FirstName:   c.PostForm("firstname"),
+		LastName:    c.PostForm("lastname"),
+		Email:       c.PostForm("email"),
+		Password:    c.PostForm("password"),
+		NoTelephone: c.PostForm("no_telephone"),
+		RoleID:      uint(roleID),
+		BranchID:    uint(branchID),
 	}
 
 	if err := h.service.HireEmployee(emp); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "employee berhasil ditambahkan"})
 }
 
 func (h *EmployeeHandler) EditEmployee(c *gin.Context) {
-	var emp models.User
-	if err := c.ShouldBindJSON(&emp); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
+	userID, _ := strconv.Atoi(c.PostForm("user_id"))
+	// branchID, _ := strconv.Atoi(c.PostForm("branch_id"))
+
+	emp := models.User{
+		UserID:      uint(userID),
+		FirstName:   c.PostForm("firstname"),
+		LastName:    c.PostForm("lastname"),
+		Email:       c.PostForm("email"),
+		NoTelephone: c.PostForm("no_telephone"),
+		// BranchID:    uint(branchID),
 	}
 
 	if err := h.service.EditEmployee(emp); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{"message": "employee berhasil diupdate"})
 }
 
