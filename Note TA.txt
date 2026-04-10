@@ -1,0 +1,175 @@
+JUDUL TA
+Rancang Bangun Sistem Informasi Operasional UMKM Multi Cabang Berbasis Web dengan Integrasi Sistem Pendukung Keputusan untuk Optimasi Kinerja Usaha
+
+METODE
+AHP + SAW + ROP
+
+Daftar Tabel
+
+roles
+-role_id
+-name
+
+users
+-user_id
+-role_id
+-branch_id
+-status
+-firstname
+-lastname
+-email
+-no_telephone
+-password
+-created_at
+-updated_at
+
+sales
+-sale_id
+-income_id
+-user_id
+-total_price
+-time
+-created_at
+
+attendances
+-attendance_id
+-user_id
+-reposrt_id
+-attendance_time
+-attendance_deadline
+-created_at
+-updated_at
+
+branches
+-branch_id
+-owner_id (fk ke user_id)
+-name
+-location
+
+stocks
+-stock_id
+-branch_id
+-item_id
+-stock_item
+
+sale_details
+-sale_detail_id
+-item_id
+-sale_id
+-total_item
+-total_price
+
+item_requests
+-item_request_id
+-item_id
+-user_id
+-status_id
+-total_item
+-created_at
+-updated_at
+
+finances
+-finance_id
+-total_money
+-updated_at
+
+deposits
+-deposit_id
+-finance_id
+-total_money
+-time
+-created_at
+
+withdraws
+-withdraw_id
+-finance_id
+-total_money
+-time
+-created_at
+
+incomes
+-income_id
+-finance_id
+-branch_id
+-report_id
+-total_income
+-created_at
+-updated_at
+
+stock_histories
+-stock_history_id
+-stock_id
+-report_id
+-stock_item
+
+items
+-item_id
+-code
+-name
+-price
+-created_at
+-updated_at
+
+restocks
+-restock_id
+-user_id
+-item_request_id
+-report_id
+-total_price
+-invoice
+-lead_time
+-created_at
+
+reports
+-report_id
+-branch_id
+-total_money
+-total_income
+-total_withdraw
+-total_deposit
+-total_profit
+-created_at
+
+
+criterias
+-criteria_id
+-branch_id
+-name
+-type
+
+criteria_comparisons
+-criteria_comparison_id
+-criteria1_id
+-criteria2_id
+-value
+
+criteria_weight
+-criteria_weight_id
+-criteria_id
+-weight
+
+
+
+
+Daftar Feature
+- Keuangan
+  * Owner (dapat melihat seluruh informasi keuangan di seluruh cabang yang dia punya)
+  * manager (dapat melihat informasi keuangan di 1 cabang yang dia pengang saja)
+  * fitur (Tarik uang/withdraw, simpan uang/deposit, lihat informasi, lihat histori)
+- Penjualan
+  * Kasir (Dapat Melakukan penjualan dan mencetak struct)
+- Gudang
+  * Admin Gudang (data melakukan pengajuan tambah barang, input barang masuk)
+- Laporan
+  * Owner & Manager (dapat melihat log aktifitas karyawan dan penjualan, lihat histori laporan, lihat detail laporan realtime dkk)
+- Kelola Cabang
+  * Owner (Dapat menambah dan mengedit data Cabang yang dia punya)
+- Kelola Karyawan
+  * Owner & Manager (dapat menambah, menghapus, mengedit data karyawan)
+  * kasir & admin Gudang (Dapat mengedit data akunya sendiri)
+- Absensi
+  * kasir & admin Gudang (Melakukan absensi sebelum menggunakan aplikasi)
+
+feature spk
+- Menentukan prioritas restock barang dengan menggunakan AHP + SAW agar data prioritas yang dihasilkan lebih akurat dan berkualitas, ditambah metode ROP untuk mencari tahu rekomendari restock barang yang dibutuhkan
+

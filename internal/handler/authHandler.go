@@ -2,7 +2,7 @@ package handler
 
 import (
 	"net/http"
-	"tipes/internal/model"
+	models "tipes/internal/model"
 	"tipes/internal/service"
 	"tipes/pkg/utils"
 
@@ -61,7 +61,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateToken(user.UserID, user.Email)
+	token, err := utils.GenerateToken(user.UserID, user.Email, user.RoleID, user.BranchID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}

@@ -6,6 +6,7 @@ import (
 	"tipes/internal/middleware"
 	"tipes/internal/repository"
 	"tipes/internal/service"
+	"tipes/pkg/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +18,25 @@ func EmployeeRoute(r *gin.Engine) {
 
 	protected := r.Group("/employee")
 	protected.Use(middleware.AuthMiddleware())
+
 	{
-		protected.GET("/", empHandler.GetEmployees)            // ?branch_id=1
-		protected.POST("/hire", empHandler.HireEmployee)       // hire
-		protected.PUT("/edit", empHandler.EditEmployee)        // edit
-		protected.DELETE("/fire/:id", empHandler.FireEmployee) // fire
+		// ✅ semua user login boleh lihat
+		protected.GET("/", empHandler.GetEmployees)
+
+		// 🔥 hanya OWNER & MANAGER
+		protected.POST("/hire",
+			middleware.AuthorizeRoles(utils.RoleOwner, utils.RoleManager),
+			empHandler.HireEmployee,
+		)
+
+		protected.PUT("/edit",
+			middleware.AuthorizeRoles(utils.RoleOwner, utils.RoleManager),
+			empHandler.EditEmployee,
+		)
+
+		protected.DELETE("/fire/:id",
+			middleware.AuthorizeRoles(utils.RoleOwner, utils.RoleManager),
+			empHandler.FireEmployee,
+		)
 	}
 }
